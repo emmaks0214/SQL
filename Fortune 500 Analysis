@@ -1,0 +1,37 @@
+Group the industries by their revenue ranges in order to see which industries are the top revenue earners.
+
+SELECT industry, revenue,
+CASE WHEN revenue >=400 THEN "top revenue"
+WHEN revenue >=200 THEN "mid revenue"
+ELSE "lower revenue"
+END AS "revenue ranges"
+FROM fortune_companies
+ORDER BY revenue desc;
+
+Find the companies that give their employees more than 20 days of paid time off.
+
+SELECT company_name, SUM(paid_time_off_days)
+FROM fortune_companies
+GROUP BY company_name
+HAVING SUM(paid_time_off_days) >20
+ORDER BY SUM(paid_time_off_days) desc;
+
+Show company names that have the highest tenure rates, the longest maternity leave, and provide healthcare benefits to their employees.
+
+SELECT company_name,avg_employee_tenure,maternity_leave_weeks, healthcare_benefits
+FROM fortune_companies
+WHERE avg_employee_tenure >=7
+AND maternity_leave_weeks >=10
+AND healthcare_benefits =1;
+
+What industries generate the most revenue on average?
+
+SELECT industry, AVG(revenue) AS average_revenue
+FROM fortune_companies
+GROUP BY industry
+ORDER BY AVG(revenue) desc;
+
+Which industry provides the highest revenue?
+
+SELECT company_name, industry, MAX(revenue)
+FROM fortune_companies;
