@@ -1,0 +1,75 @@
+# Below are potential answers to different SQL inquiries from a dataset called chinook, 
+# which represents a digital media store and includes tables for artists, albums, media tracks, invoices, and customers.
+
+1) Show Customers (their full names, customer ID, and country) who are not in the US.
+
+SELECT Customerid, FirstName, Country
+
+FROM customers
+
+WHERE Country <> 'USA'
+
+ORDER BY Country asc
+
+
+2) Show the playlist name and ID number of every playlist that features a song composed by Angus Young, Malcolm Young, and Brian Johnson.
+
+SELECT playlists.Name, playlists.Playlistid
+
+FROM playlists
+
+JOIN playlist_track as list_track
+
+ON playlists.Playlistid = list_track.Playlistid
+
+JOIN tracks
+
+ON tracks.Trackid = list_track.Trackid
+
+WHERE Composer = 'Angus Young, Malcolm Young, Brian Johnson'
+
+Order by playlists.Playlistid asc
+
+
+3) Show how many invoices there were in 2009.
+
+SELECT COUNT(InvoiceID)
+
+FROM invoices
+
+WHERE InvoiceDate between '2009-01-01 00:00:00' AND '2009-12-31 00:00:00'
+
+
+4) Show the total sales made by each sales agent.
+
+SELECT emp.FirstName, emp.LastName,
+
+ROUND(SUM(Inv.Total), 2) as 'Total Sales' 
+
+FROM chinook.Employees emp
+
+JOIN chinook.Customers cust 
+
+ON cust.SupportRepId = emp.EmployeeId
+
+JOIN chinook.Invoices Inv 
+
+ON Inv.CustomerId = cust.CustomerId
+
+WHERE emp.Title = 'Sales Support Agent' 
+
+GROUP BY emp.FirstName;
+
+
+5) Show the employees who have customers in FL.
+
+SELECT employees.FirstName, employees.LastName
+
+FROM employees
+
+JOIN customers
+
+ON employees.EmployeeID = customers.SupportRepID
+
+WHERE customers.State = 'FL'
+
